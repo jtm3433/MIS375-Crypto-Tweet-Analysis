@@ -67,16 +67,20 @@ for a in re_j:
 #####end of big ben
 
 #####get tweets about Cryptocurrencies
-tweets_num=3000 # number of tweets we want
+tweets_num=300000 # number of tweets we want
 parameters = []
 js=[]
 for i in range(tweets_num/100):
-  url = "https://api.twitter.com/1.1/search/tweets.json?q='Ripple'&lang=en&count=100&result_type=recent&max_id="+str(id_list[2*i])
+  url = "https://api.twitter.com/1.1/search/tweets.json?q='Ripple'&lang=en&count=100&result_type=recent&max_id="+str(id_list[2*i])+"&since=2015-04-12"
   response = twitterreq(url, "GET", parameters)
   re_j=json.load(response)
   re_j=re_j['statuses']
   js.append(re_j)
   time.sleep(1)
+
+# TODO: FILTER TWEETS BASED ON THE FOLLOWING CRITERIA
+# Account must have at least ten followers (followers_count > 10)
+# 
 
 ids=[]
 screen_name=[]
@@ -88,27 +92,30 @@ favorite=[]
 friends=[]
 text=[]
 location=[]
+date=[]
 
 for tweets in js:
   for tweet in tweets:
     if tweet.get('user'):
-        ids.append(tweet['user']['id']) 
-	retweet.append(tweet['retweet_count'])
-	favorite.append(tweet['favorite_count'])
-	inreplyto.append(tweet['in_reply_to_screen_name'])
-	friends.append(tweet['user']['friends_count'])
-        screen_name.append(tweet['user']['screen_name'])
-        followers.append(tweet['user']['followers_count'])
-        listed.append(tweet['user']['listed_count'])
-        text.append(tweet['text'])
-        location.append(tweet['user']['location'])
+      ids.append(tweet['user']['id']) 
+      retweet.append(tweet['retweet_count'])
+      favorite.append(tweet['favorite_count'])
+      inreplyto.append(tweet['in_reply_to_screen_name'])
+      friends.append(tweet['user']['friends_count'])
+      screen_name.append(tweet['user']['screen_name'])
+      followers.append(tweet['user']['followers_count'])
+      listed.append(tweet['user']['listed_count'])
+      text.append(tweet['text'])
+      location.append(tweet['user']['location'])
+      date.append(tweet['created_at'])
+
 ####################################################
 
 #######output tweets file
-out = open('ripple_tweets4.csv','wb')
-print >> out, 'ids, screen_name, followers, retweet, inreplyto, favorite, friends, listed, text, location'
+out = open('bitcoin_tweets.csv','wb')
+print >> out, 'ids, screen_name, followers, retweet, inreplyto, favorite, friends, listed, text, location, date'
 
-rows = zip(ids, screen_name, followers, retweet, inreplyto, favorite, friends, listed, text, location)
+rows = zip(ids, screen_name, followers, retweet, inreplyto, favorite, friends, listed, text, location, date)
 
 csv = writer(out)
 
