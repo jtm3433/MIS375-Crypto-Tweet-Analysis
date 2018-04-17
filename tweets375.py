@@ -67,11 +67,11 @@ for a in re_j:
 #####end of big ben
 
 #####get tweets about Cryptocurrencies
-tweets_num=300000 # number of tweets we want
+tweets_num=3000 # number of tweets we want
 parameters = []
 js=[]
 for i in range(tweets_num/100):
-  url = "https://api.twitter.com/1.1/search/tweets.json?q='Ripple'&lang=en&count=100&result_type=recent&max_id="+str(id_list[2*i])+"&since=2015-04-12"
+  url = "https://api.twitter.com/1.1/search/tweets.json?q='Ripple'&lang=en&count=100&result_type=recent&max_id="+str(id_list[2*i])
   response = twitterreq(url, "GET", parameters)
   re_j=json.load(response)
   re_j=re_j['statuses']
